@@ -1,4 +1,4 @@
-_ = require 'underscore-ext'
+_ = require 'underscore'
 Hoek = require 'hoek'
 mongooseRestHelper = require 'mongoose-rest-helper'
 i18n = require '../i18n'

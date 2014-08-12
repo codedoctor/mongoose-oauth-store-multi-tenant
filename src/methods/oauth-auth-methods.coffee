@@ -1,4 +1,4 @@
-_ = require 'underscore-ext'
+_ = require 'underscore'
 Boom = require 'boom'
 Hoek = require 'hoek'
 mongooseRestHelper = require 'mongoose-rest-helper'
@@ -58,12 +58,8 @@ module.exports = class OauthAuthMethods
       cb = options 
       options = {}
 
-    # TODO: APP/CLient shit
     @models.OauthAccessToken.findOne _id : token, (err, item) =>
       return cb err  if err
-
-      #console.log "XXX #{JSON.stringify(item)}"
-
       return cb null, isValid : false unless item
 
       cb null,
@@ -89,10 +85,13 @@ module.exports = class OauthAuthMethods
       cb = options 
       options = {}
 
-    return cb new Error "userId parameter missing in createAccessGrant" unless userId
-    return cb new Error "appId parameter missing in createAccessGrant" unless appId
-    return cb new Error "redirectUrl parameter missing in createAccessGrant" unless redirectUrl
-    return cb new Error "scope parameter missing in createAccessGrant" unless scope && scope.length > 0
+    scope = [scope] if _.isString(scope)
+
+    return cb new Error i18n.errorTenantIdRequired unless _tenantId
+    return cb new Error "userId parameter missing." unless userId
+    return cb new Error "appId parameter missing." unless appId
+    return cb new Error "redirectUrl parameter missing." unless redirectUrl
+    return cb new Error "scope parameter missing." unless scope && scope.length > 0
 
     accessGrant = new @models.OauthAccessGrant
       _tenantId : _tenantId
@@ -114,6 +113,8 @@ module.exports = class OauthAuthMethods
     if _.isFunction(options)
       cb = options 
       options = {}
+
+    return cb new Error i18n.errorTenantIdRequired unless _tenantId
 
     userId = mongooseRestHelper.asObjectId userId
 
@@ -215,15 +216,3 @@ module.exports = class OauthAuthMethods
           return cb err if err
           cb(null, newToken)
 
-
-  #issueAccessToken: (userId, clientId, clientSecret = null, realm = null, scope = null, expiresIn = null, cb) =>
-
-  ###
-  getUserIdForAccessTokenString: (accessTokenString, cb) =>
-      cb(null)
-
-
-
-  listAccessTokens: (cb) =>
-    cb(null)
-  ###

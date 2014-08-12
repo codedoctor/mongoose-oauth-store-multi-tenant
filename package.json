@@ -35,10 +35,9 @@
     "mongoose-plugins-resource-limits": "0.2.x",
     "mongoose-plugins-tags-simple": "0.2.x",
     "mongoose-plugins-timestamp": "0.2.x",
-    "mongoose-rest-helper": "1.1.x",
+    "mongoose-rest-helper": "1.0.x",
     "passgen": "1.0.1",
-    "underscore": "1.6.0",
-    "underscore-ext": "0.2.0"
+    "underscore": "1.6.0"
   },
   "peerDependencies" : {
     "mongoose": ">=3.8.14"

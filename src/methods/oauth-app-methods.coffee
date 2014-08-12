@@ -1,4 +1,4 @@
-_ = require 'underscore-ext'
+_ = require 'underscore'
 Boom = require 'boom'
 Hoek = require 'hoek'
 mongooseRestHelper = require 'mongoose-rest-helper'
@@ -21,7 +21,7 @@ module.exports = class OauthAppMethods
   Create a new oauth client.
   ###
   create:(_tenantId,objs = {},options={}, cb = ->) =>
-    return cb new Error "_tenantId parameter is required." unless _tenantId
+    return cb new Error i18n.errorTenantIdRequired unless _tenantId
 
     if _.isFunction(options)
       cb = options 
@@ -57,7 +57,7 @@ module.exports = class OauthAppMethods
   Retrieves all oauth apps for a specific _tenantId
   ###
   all:(_tenantId,options = {}, cb = ->) =>
-    return cb new Error "_tenantId parameter is required." unless _tenantId
+    return cb new Error i18n.errorTenantIdRequired unless _tenantId
 
     settings = 
         baseQuery:
@@ -72,7 +72,7 @@ module.exports = class OauthAppMethods
   Retrieves apps for a specific user, within the _tenantId scope.
   ###
   getAppsForUser:(_tenantId,owningUserId, options = {}, cb = ->) =>
-    return cb new Error "_tenantId parameter is required." unless _tenantId
+    return cb new Error i18n.errorTenantIdRequired unless _tenantId
     return cb new Error "owningUserId parameter is required." unless owningUserId
 
     if _.isFunction(options)

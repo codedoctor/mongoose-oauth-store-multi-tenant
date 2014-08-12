@@ -1,4 +1,4 @@
-_ = require 'underscore-ext'
+_ = require 'underscore'
 async = require 'async'
 Boom = require 'boom'
 Hoek = require 'hoek'

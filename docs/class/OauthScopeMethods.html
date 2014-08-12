@@ -51,7 +51,7 @@
     </span>
     <span class='bound note title'>Bound</span>
     <span class='desc'>
-      Returns all the scopes for an account 
+      Returns all the scopes for a given _tenantId 
     </span>
   </li>
   <li>
@@ -77,7 +77,7 @@
     </span>
     <span class='bound note title'>Bound</span>
     <span class='desc'>
-      Create a new processDefinition 
+      Create a new OauthScope object 
     </span>
   </li>
   <li>
@@ -90,7 +90,7 @@
     </span>
     <span class='bound note title'>Bound</span>
     <span class='desc'>
-      Completely destroys an organization. 
+      Completely destroys an OauthScope object 
     </span>
   </li>
   <li>
@@ -103,7 +103,7 @@
     </span>
     <span class='bound note title'>Bound</span>
     <span class='desc'>
-      Updates a deployment 
+      Updates an OauthScope. 
     </span>
   </li>
 </ul>
@@ -116,18 +116,7 @@
 <b>constructor</b><span>(models)</span>
       <br>
     </p>
-    <div class='docstring'>
-  <p>constructor:(@models, config) -&gt; if config &amp;&amp; config.scopes
-    for scopeDefinition in config.scopes
-      scope = new Scope(scopeDefinition)</p><pre><code>  if scope.isValid()
-    @loadedScopes[scope.name] = scope
-  else
-    console.log &quot;Invalid scope in config - skipped - #{JSON.stringify(scopeDefinition)}&quot;
-    # Todo: Better logging, error handling
-</code></pre>
-</div>
-<div class='tags'>
-</div>
+    
   </div>
 </div>
       <h2>Instance Method Details</h2>
@@ -141,7 +130,7 @@
       <br>
     </p>
     <div class='docstring'>
-  <p>Returns all the scopes for an account</p>
+  <p>Returns all the scopes for a given _tenantId</p>
 </div>
 <div class='tags'>
 </div>
@@ -169,7 +158,7 @@
       <br>
     </p>
     <div class='docstring'>
-  <p>Create a new processDefinition</p>
+  <p>Create a new OauthScope object</p>
 </div>
 <div class='tags'>
 </div>
@@ -183,7 +172,7 @@
       <br>
     </p>
     <div class='docstring'>
-  <p>Completely destroys an organization.</p>
+  <p>Completely destroys an OauthScope object</p>
 </div>
 <div class='tags'>
 </div>
@@ -197,7 +186,7 @@
       <br>
     </p>
     <div class='docstring'>
-  <p>Updates a deployment</p>
+  <p>Updates an OauthScope.</p>
 </div>
 <div class='tags'>
 </div>
@@ -205,7 +194,7 @@
 </div>
     </div>
     <div id='footer'>
-  August 12, 14 13:08:19 by
+  August 12, 14 15:44:26 by
   <a href='https://github.com/coffeedoc/codo' title='CoffeeScript API documentation generator'>
     Codo
   </a>
