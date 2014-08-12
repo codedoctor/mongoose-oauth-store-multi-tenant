@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "oauth-redirect-uri-schema.js",
+  "sourceRoot": "../../src/schemas/",
+  "sources": [
+    "oauth-redirect-uri-schema.coffee"
+  ],
+  "names": [],
+  "mappings": "AAAA;AAAA,MAAA,gCAAA;;AAAA,EAAA,QAAA,GAAW,OAAA,CAAQ,UAAR,CAAX,CAAA;;AAAA,EAEA,MAAM,CAAC,OAAP,GAAkB,sBAAA,GAA6B,IAAA,QAAQ,CAAC,MAAT,CAC3C;AAAA,IAAA,GAAA,EACE;AAAA,MAAA,IAAA,EAAM,MAAN;KADF;GAD2C,EAG3C;AAAA,IAAA,MAAA,EAAS,IAAT;GAH2C,CAF/C,CAAA;AAAA"
+}
