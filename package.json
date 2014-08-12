@@ -2,7 +2,7 @@
   "author": "Martin Wawrusch <martin@wawrusch.com> (http://martinatsunset.com)",
   "name": "mongoose-oauth-store-multi-tenant",
   "description": "A bunch of mongoose schemas to implement identity management (users, accesstokens, oauth apps)",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "lib/index.js",
   "repository": {
     "type": "git",
@@ -39,9 +39,9 @@
     "passgen": "1.0.1",
     "underscore": "1.6.0"
   },
-  "peerDependencies" : {
+  "peerDependencies": {
     "mongoose": ">=3.8.14"
-    },
+  },
   "devDependencies": {
     "blanket": "1.1.6",
     "codo": "2.0.9",
