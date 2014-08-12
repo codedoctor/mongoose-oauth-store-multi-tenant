@@ -1,9 +1,8 @@
 _ = require 'underscore-ext'
 Boom = require 'boom'
 Hoek = require 'hoek'
-mongoose = require "mongoose"
 mongooseRestHelper = require 'mongoose-rest-helper'
-ObjectId = mongoose.Types.ObjectId
+i18n = require '../i18n'
 passgen = require 'passgen'
 
 module.exports = class OauthAppMethods
@@ -12,7 +11,10 @@ module.exports = class OauthAppMethods
   UPDATE_EXCLUDEFIELDS = ['_id','createdAt']
 
   constructor:(@models, @scopeMethods) ->
-    throw new Error("models parameter is required") unless @models
+    Hoek.assert @models,i18n.assertModelsRequired
+    Hoek.assert @models.OauthScope,i18n.assertOauthScopeInModels
+    Hoek.assert @models.OauthApp,i18n.assertOauthAppInModels
+
     throw new Error("scopeMethods parameter is required") unless @scopeMethods
 
   ###
@@ -25,7 +27,7 @@ module.exports = class OauthAppMethods
       cb = options 
       options = {}
 
-    objs._tenantId = new ObjectId _tenantId.toString()
+    objs._tenantId = mongooseRestHelper.asObjectId _tenantId
 
     @models.OauthScope.find _tenantId : objs._tenantId, (err, scopes) =>
       return cb err if err
@@ -78,7 +80,7 @@ module.exports = class OauthAppMethods
       options = {}
 
     options.where ||= {}
-    options.where.createdByUserId = new ObjectId owningUserId.toString()
+    options.where.createdByUserId = mongooseRestHelper.asObjectId owningUserId
 
     @all _tenantId,options,cb
 
@@ -107,7 +109,7 @@ module.exports = class OauthAppMethods
       cb = options 
       options = {}
 
-    oauthAppId = new ObjectId oauthAppId.toString()
+    oauthAppId = mongooseRestHelper.asObjectId oauthAppId
     @models.OauthApp.findOne _id : oauthAppId, (err, item) =>
       return cb err if err
 

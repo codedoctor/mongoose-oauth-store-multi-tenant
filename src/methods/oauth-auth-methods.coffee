@@ -1,9 +1,8 @@
 _ = require 'underscore-ext'
 Boom = require 'boom'
 Hoek = require 'hoek'
-mongoose = require "mongoose"
 mongooseRestHelper = require 'mongoose-rest-helper'
-ObjectId = mongoose.Types.ObjectId
+i18n = require '../i18n'
 
 
 ###
@@ -15,6 +14,16 @@ module.exports = class OauthAuthMethods
   TENMINUTESINSECONDS = 60 * 10
 
   ###
+  Initializes a new instance of the @see AuthMethods class.
+  @param {Object} models A collection of models to be used within the auth framework.
+  ###
+  constructor:(@models) ->
+    Hoek.assert @models,i18n.assertModelsRequired
+    Hoek.assert @models.OauthApp,i18n.assertOauthAppInModels
+    Hoek.assert @models.OauthAccessToken,i18n.assertOauthAccessTokenInModels
+    Hoek.assert @models.OauthAccessGrant,i18n.assertOauthAccessGrantInModels
+
+  ###
   Returns the current date + seconds
   @param {Number} seconds The seconds, or if null then roughly 10 years is assumed.
   ###
@@ -22,14 +31,6 @@ module.exports = class OauthAuthMethods
     now = new Date()
     now.setSeconds(now.getSeconds() + seconds)
     now
-
-  ###
-  Initializes a new instance of the @see AuthMethods class.
-  @param {Object} models A collection of models to be used within the auth framework.
-  ###
-  constructor:(@models) ->
-    throw new Error("models parameter is required") unless @models
-
 
   ###
   Retrieves an app for a key. This ONLY retrieves active keys
@@ -114,7 +115,7 @@ module.exports = class OauthAuthMethods
       cb = options 
       options = {}
 
-    userId = new ObjectId userId.toString()
+    userId = mongooseRestHelper.asObjectId userId
 
     @appForClientId clientId, (err, app) =>
       return cb err if err

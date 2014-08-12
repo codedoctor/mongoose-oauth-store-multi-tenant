@@ -1,12 +1,7 @@
 _ = require 'underscore-ext'
-Boom = require 'boom'
 Hoek = require 'hoek'
-mongoose = require "mongoose"
 mongooseRestHelper = require 'mongoose-rest-helper'
-ObjectId = mongoose.Types.ObjectId
-
-Scope = require('../scope').Scope
-
+i18n = require '../i18n'
 
 ###
 Provides methods to interact with the scope store.
@@ -14,42 +9,15 @@ Provides methods to interact with the scope store.
 module.exports = class OauthScopeMethods
   UPDATE_EXCLUDEFIELDS = ['_id']
 
-
-  ###
-  A hash of scopes.
-  ###
-  #loadedScopes : {}
-
-  ###
-  Initializes a new instance of the @see ScopeMethods class.
-  @param {Object} models A collection of models to be used within the auth framework.
-  @description
-  The config object looks like this:
-  ...
-  scopes: [...]
-  ...
-  ###
-  ###
-  constructor:(@models, config) ->
-    if config && config.scopes
-      for scopeDefinition in config.scopes
-        scope = new Scope(scopeDefinition)
-
-        if scope.isValid()
-          @loadedScopes[scope.name] = scope
-        else
-          console.log "Invalid scope in config - skipped - #{JSON.stringify(scopeDefinition)}"
-          # Todo: Better logging, error handling
-  ###
-
   constructor:(@models) ->
-
+    Hoek.assert @models,i18n.assertModelsRequired
+    Hoek.assert @models.OauthScope,i18n.assertOauthScopeInModels
 
   ###
-  Returns all the scopes for an account
+  Returns all the scopes for a given _tenantId
   ###
   all: (_tenantId,options = {},cb = ->) =>
-    return cb new Error "_tenantId parameter is required." unless _tenantId
+    return cb new Error i18n.errorTenantIdRequired unless _tenantId
 
     settings = 
         baseQuery:
@@ -68,30 +36,29 @@ module.exports = class OauthScopeMethods
 
 
   ###
-  Create a new processDefinition
+  Create a new OauthScope object
   ###
   create:(_tenantId,objs = {}, options = {}, cb = ->) =>
-    return cb new Error "_tenantId parameter is required." unless _tenantId
+    return cb new Error i18n.errorTenantIdRequired unless _tenantId
+
     settings = {}
-    objs._tenantId = new ObjectId _tenantId.toString()
+    objs._tenantId = mongooseRestHelper.asObjectId _tenantId
     mongooseRestHelper.create @models.OauthScope,settings,objs,options,cb
 
   ###
-  Completely destroys an organization.
+  Completely destroys an OauthScope object
   ###
   destroy: (scopeId, options = {}, cb = ->) =>
     return cb new Error "scopeId parameter is required." unless scopeId
     settings = {}
     mongooseRestHelper.destroy @models.OauthScope,scopeId, settings,{}, cb
 
-
   ###
-  Updates a deployment
+  Updates an OauthScope.
   ###
   patch: (scopeId, obj = {}, options = {}, cb = ->) =>
     return cb new Error "scopeId parameter is required." unless scopeId
     settings =
       exclude : UPDATE_EXCLUDEFIELDS
     mongooseRestHelper.patch @models.OauthScope,scopeId, settings, obj, options, cb
-
 

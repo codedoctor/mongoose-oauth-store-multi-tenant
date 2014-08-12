@@ -16,6 +16,9 @@ module.exports = class AdminMethods
   @param {Object} models A collection of models that can be used.
   ###
   constructor:(@models, @users, @oauthApps, @oauthAuth,@oauthScopes) ->
+    #Hoek.assert @models,i18n.assertModelsRequired
+    #Hoek.assert @models.OauthScope,i18n.assertOauthScopeInModels
+
     throw new Error "models parameter is required" unless @models
     throw new Error "oauthApps parameter is required" unless @oauthApps
     throw new Error "oauthAuth parameter is required" unless @oauthAuth
