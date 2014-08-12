@@ -5,23 +5,26 @@ mongooseRestHelper = require 'mongoose-rest-helper'
 i18n = require '../i18n'
 passgen = require 'passgen'
 
+fnUnprocessableEntity = (message = "",data) ->
+  return Boom.create 422, message, data
+
 module.exports = class OauthAppMethods
   KEY_LENGTH = 20
   SECRET_LENGTH = 40
   UPDATE_EXCLUDEFIELDS = ['_id','createdAt']
 
-  constructor:(@models, @scopeMethods) ->
+  constructor:(@models, @oauthScopeMethods) ->
     Hoek.assert @models,i18n.assertModelsRequired
     Hoek.assert @models.OauthScope,i18n.assertOauthScopeInModels
     Hoek.assert @models.OauthApp,i18n.assertOauthAppInModels
-
-    throw new Error("scopeMethods parameter is required") unless @scopeMethods
+    Hoek.assert @models.OauthApp,i18n.assertOauthAppInModels
+    Hoek.assert @oauthScopeMethods,i18n.assertOauthScopeMethods
 
   ###
   Create a new oauth client.
   ###
   create:(_tenantId,objs = {},options={}, cb = ->) =>
-    return cb new Error i18n.errorTenantIdRequired unless _tenantId
+    return cb fnUnprocessableEntity( i18n.errorTenantIdRequired) unless _tenantId
 
     if _.isFunction(options)
       cb = options 
@@ -57,7 +60,7 @@ module.exports = class OauthAppMethods
   Retrieves all oauth apps for a specific _tenantId
   ###
   all:(_tenantId,options = {}, cb = ->) =>
-    return cb new Error i18n.errorTenantIdRequired unless _tenantId
+    return cb fnUnprocessableEntity( i18n.errorTenantIdRequired) unless _tenantId
 
     settings = 
         baseQuery:
@@ -72,8 +75,8 @@ module.exports = class OauthAppMethods
   Retrieves apps for a specific user, within the _tenantId scope.
   ###
   getAppsForUser:(_tenantId,owningUserId, options = {}, cb = ->) =>
-    return cb new Error i18n.errorTenantIdRequired unless _tenantId
-    return cb new Error "owningUserId parameter is required." unless owningUserId
+    return cb fnUnprocessableEntity( i18n.errorTenantIdRequired) unless _tenantId
+    return cb fnUnprocessableEntity( i18n.errorOwningUserIdRequired) unless owningUserId
 
     if _.isFunction(options)
       cb = options 
@@ -88,22 +91,22 @@ module.exports = class OauthAppMethods
   returns a specific oauth app.
   ###
   get: (oauthAppId,options={}, cb = ->) =>
-    return cb new Error "oauthAppId parameter is required." unless oauthAppId
+    return cb fnUnprocessableEntity( i18n.errorOauthAppIdRequired) unless oauthAppId
     mongooseRestHelper.getById @models.OauthApp,oauthAppId,null,options, cb
 
   ###
-  Completely destroys an app.
+  Completely destroys an oauth app.
   ###
   destroy: (oauthAppId,options = {}, cb = ->) =>
-    return cb new Error "oauthAppId parameter is required." unless oauthAppId
+    return cb fnUnprocessableEntity( i18n.errorOauthAppIdRequired) unless oauthAppId
     settings = {}
     mongooseRestHelper.destroy @models.OauthApp,oauthAppId, settings,{}, cb
 
   ###
-  Reset the app keys for an app.
+  Reset the app keys for an oauth app.
   ###
   resetAppKeys: (oauthAppId,options = {}, cb = ->) =>
-    return cb new Error "oauthAppId parameter is required." unless oauthAppId
+    return cb fnUnprocessableEntity( i18n.errorOauthAppIdRequired) unless oauthAppId
 
     if _.isFunction(options)
       cb = options 
@@ -124,7 +127,7 @@ module.exports = class OauthAppMethods
   Update an app.
   ###
   patch: (oauthAppId, obj = {},options = {}, cb = ->) =>
-    return cb new Error "oauthAppId parameter is required." unless oauthAppId
+    return cb fnUnprocessableEntity( i18n.errorOauthAppIdRequired) unless oauthAppId
 
     settings =
       exclude : UPDATE_EXCLUDEFIELDS

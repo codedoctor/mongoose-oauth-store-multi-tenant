@@ -1,7 +1,11 @@
 _ = require 'underscore'
+Boom = require 'boom'
 Hoek = require 'hoek'
 mongooseRestHelper = require 'mongoose-rest-helper'
 i18n = require '../i18n'
+
+fnUnprocessableEntity = (message = "",data) ->
+  return Boom.create 422, message, data
 
 ###
 Provides methods to interact with the scope store.
@@ -17,7 +21,7 @@ module.exports = class OauthScopeMethods
   Returns all the scopes for a given _tenantId
   ###
   all: (_tenantId,options = {},cb = ->) =>
-    return cb new Error i18n.errorTenantIdRequired unless _tenantId
+    return cb fnUnprocessableEntity( i18n.errorTenantIdRequired) unless _tenantId
 
     settings = 
         baseQuery:
@@ -30,16 +34,16 @@ module.exports = class OauthScopeMethods
   ###
   Get a scope for it's id.
   ###
-  get: (scopeId,options = {}, cb = ->) =>
-    return cb new Error "scopeId parameter is required." unless scopeId
-    mongooseRestHelper.getById @models.OauthScope,scopeId,null,options, cb
+  get: (oauthScopeId,options = {}, cb = ->) =>
+    return cb fnUnprocessableEntity( i18n.errorOauthScopeIdRequired) unless oauthScopeId
+    mongooseRestHelper.getById @models.OauthScope,oauthScopeId,null,options, cb
 
 
   ###
   Create a new OauthScope object
   ###
   create:(_tenantId,objs = {}, options = {}, cb = ->) =>
-    return cb new Error i18n.errorTenantIdRequired unless _tenantId
+    return cb fnUnprocessableEntity( i18n.errorTenantIdRequired) unless _tenantId
 
     settings = {}
     objs._tenantId = mongooseRestHelper.asObjectId _tenantId
@@ -48,17 +52,17 @@ module.exports = class OauthScopeMethods
   ###
   Completely destroys an OauthScope object
   ###
-  destroy: (scopeId, options = {}, cb = ->) =>
-    return cb new Error "scopeId parameter is required." unless scopeId
+  destroy: (oauthScopeId, options = {}, cb = ->) =>
+    return cb fnUnprocessableEntity( i18n.errorOauthScopeIdRequired) unless oauthScopeId
     settings = {}
-    mongooseRestHelper.destroy @models.OauthScope,scopeId, settings,{}, cb
+    mongooseRestHelper.destroy @models.OauthScope,oauthScopeId, settings,{}, cb
 
   ###
   Updates an OauthScope.
   ###
-  patch: (scopeId, obj = {}, options = {}, cb = ->) =>
-    return cb new Error "scopeId parameter is required." unless scopeId
+  patch: (oauthScopeId, obj = {}, options = {}, cb = ->) =>
+    return cb fnUnprocessableEntity( i18n.errorOauthScopeIdRequired) unless oauthScopeId
     settings =
       exclude : UPDATE_EXCLUDEFIELDS
-    mongooseRestHelper.patch @models.OauthScope,scopeId, settings, obj, options, cb
+    mongooseRestHelper.patch @models.OauthScope,oauthScopeId, settings, obj, options, cb
 

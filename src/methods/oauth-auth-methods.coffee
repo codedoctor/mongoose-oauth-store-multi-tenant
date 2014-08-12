@@ -4,6 +4,8 @@ Hoek = require 'hoek'
 mongooseRestHelper = require 'mongoose-rest-helper'
 i18n = require '../i18n'
 
+fnUnprocessableEntity = (message = "",data) ->
+  return Boom.create 422, message, data
 
 ###
 Provides methods to interact with the auth store.
@@ -12,6 +14,7 @@ module.exports = class OauthAuthMethods
 
   TENYEARSINSECONDS =  60 * 60 * 24 * 365 * 10
   TENMINUTESINSECONDS = 60 * 10
+  DEFAULT_EXPIRATION = 3600
 
   ###
   Initializes a new instance of the @see AuthMethods class.
@@ -41,7 +44,7 @@ module.exports = class OauthAuthMethods
       cb = options 
       options = {}
 
-    return cb new Error "clientId parameter missing in appForClientId" unless clientId
+    return cb fnUnprocessableEntity( i18n.errorClientIdRequired) unless clientId
 
     @models.OauthApp.findOne 'clients.clientId' : clientId, (err, item) =>
       return cb err if err
@@ -54,6 +57,9 @@ module.exports = class OauthAuthMethods
   isClientValid can be checked for tighter security.
   ###
   validate: (token, clientId,options = {}, cb = ->) =>
+    return cb fnUnprocessableEntity( i18n.errorTokenRequired) unless token
+    return cb fnUnprocessableEntity( i18n.errorClientIdRequired) unless clientId
+
     if _.isFunction(options)
       cb = options 
       options = {}
@@ -73,29 +79,29 @@ module.exports = class OauthAuthMethods
 
   ###
   Creates a new access grant.
-  @param {String || ObjectId} appId the mongoose app id.
+  @param {String || ObjectId} oauthAppId the mongoose app id.
   @param {String || ObjectId} userId the mongoose user id
   @param {String} redirectUrl the requested redirect_uri. This must be later matched when issuing an access token.
   @param {String[]} scope an array of strings, with one or more elements, specifying the scope that should be granted.
   @param {String} realm an optional realm for which this access grant is for.
   @param {Callback} cb the callback that will be invoked, with err and the mongoose AccessGrant model.
   ###
-  createAccessGrant: (_tenantId,appId, userId, redirectUrl, scope, realm = null, options = {}, cb = ->) =>
+  createAccessGrant: (_tenantId,oauthAppId, userId, redirectUrl, scope, realm = null, options = {}, cb = ->) =>
     if _.isFunction(options)
       cb = options 
       options = {}
 
     scope = [scope] if _.isString(scope)
 
-    return cb new Error i18n.errorTenantIdRequired unless _tenantId
-    return cb new Error "userId parameter missing." unless userId
-    return cb new Error "appId parameter missing." unless appId
-    return cb new Error "redirectUrl parameter missing." unless redirectUrl
-    return cb new Error "scope parameter missing." unless scope && scope.length > 0
+    return cb fnUnprocessableEntity( i18n.errorTenantIdRequired) unless _tenantId
+    return cb fnUnprocessableEntity( i18n.errorOauthAppIdRequired) unless oauthAppId
+    return cb fnUnprocessableEntity( i18n.errorUserIdRequired) unless userId
+    return cb fnUnprocessableEntity( i18n.errorRedirectUrlRequired) unless redirectUrl
+    return cb fnUnprocessableEntity( i18n.errorScopeRequiredAndArrayAndMinOne) unless scope && _.isArray(scope) && scope.length > 0
 
     accessGrant = new @models.OauthAccessGrant
       _tenantId : _tenantId
-      appId : appId
+      appId : oauthAppId
       identityUserId: userId
       realm : realm
       redirectUrl : redirectUrl
@@ -114,7 +120,11 @@ module.exports = class OauthAuthMethods
       cb = options 
       options = {}
 
-    return cb new Error i18n.errorTenantIdRequired unless _tenantId
+    scope = [scope] if _.isString scope
+
+    return cb fnUnprocessableEntity( i18n.errorTenantIdRequired) unless _tenantId
+    return cb fnUnprocessableEntity( i18n.errorUserIdRequired) unless userId
+    return cb fnUnprocessableEntity( i18n.errorClientIdRequired) unless clientId
 
     userId = mongooseRestHelper.asObjectId userId
 
@@ -137,17 +147,23 @@ module.exports = class OauthAuthMethods
       cb = options 
       options = {}
 
+    scope = [scope] if _.isString scope
+
+    return cb fnUnprocessableEntity( i18n.errorTenantIdRequired) unless _tenantId
+    return cb fnUnprocessableEntity( i18n.errorUserIdRequired) unless userId
+    return cb fnUnprocessableEntity( i18n.errorClientIdRequired) unless clientId
+
     @appForClientId clientId, (err, app) =>
       return cb err if err
-      return cb new Error("Could not find app for clientId #{clientId}") unless app
+      return cb Boom.notFound("#{i18n.prefixErrorNoAppForClientId} #{clientId}") unless app
 
       token = new @models.OauthAccessToken
         _tenantId : _tenantId
         appId: app._id
         identityUserId: userId
         realm: realm
-        expiresAt: @currentDateAndSeconds(expiresIn || 3600) # WRONG OR
-        scope: if scope && scope.length > 0 then scope else app.scopes
+        expiresAt: @currentDateAndSeconds(expiresIn || DEFAULT_EXPIRATION) # WRONG OR
+        scope: if scope && _.isArray(scope) && scope.length > 0 then scope else app.scopes
 
       token.save (err) =>
           return cb err if err
@@ -158,13 +174,15 @@ module.exports = class OauthAuthMethods
   @param {String} code the authorization_code to exchange into an access token
   ###
   exchangeAuthorizationCodeForAccessToken: (code,options = {}, cb = ->) =>
+    return cb fnUnprocessableEntity( i18n.errorCodeRequired) unless refreshToken
+
     if _.isFunction(options)
       cb = options 
       options = {}
 
     @models.OauthAccessGrant.findOne _id: code, (err, accessGrant) =>
       return cb err if err
-      return cb(new Error("NOT FOUND")) unless accessGrant
+      return cb Boom.notFound(i18n.accessGrantNotFound) unless accessGrant
 
       # TODO: CHECK VALIDITY
 
@@ -172,7 +190,7 @@ module.exports = class OauthAuthMethods
         appId: accessGrant.appId
         identityUserId: accessGrant.userId
         realm: accessGrant.realm
-        expiresAt: @currentDateAndSeconds(3600) # PROBABLY TOTALLY WRONG
+        expiresAt: @currentDateAndSeconds(DEFAULT_EXPIRATION) # PROBABLY TOTALLY WRONG
         scope: accessGrant.scope
 
       token.save (err) =>
@@ -183,20 +201,22 @@ module.exports = class OauthAuthMethods
           accessGrant.save (err) =>
             return cb err if err
 
-            cb(null, token)
+            cb null, token
 
   ###
   Takes a code and exchanges it for an access token
   @param {String} refreshToken the refresh_token to exchange into an access token
   ###
   exchangeRefreshTokenForAccessToken: (refreshToken, options = {}, cb = ->) =>
+    return cb fnUnprocessableEntity( i18n.errorRefreshTokenRequired) unless refreshToken
+
     if _.isFunction(options)
       cb = options 
       options = {}
 
     @models.OauthAccessToken.findOne refreshToken: refreshToken, (err, token) =>
       return cb err if err
-      return cb(new Error("NOT FOUND 2")) unless token # DO some shit
+      return cb Boom.notFound(i18n.tokenNotFound) unless token
 
       token.refreshToken = null
       # MAKE SURE THIS TOKEN IS EXPIRED
@@ -209,10 +229,10 @@ module.exports = class OauthAuthMethods
           appId: token.appId
           identityUserId: token.userId
           realm: token.realm
-          expiresAt: @currentDateAndSeconds(3600) # PROBABLY TOTALLY WRONG
+          expiresAt: @currentDateAndSeconds(DEFAULT_EXPIRATION) # PROBABLY TOTALLY WRONG
           scope: token.scope
 
         newToken.save (err) =>
           return cb err if err
-          cb(null, newToken)
+          cb null, newToken
 
