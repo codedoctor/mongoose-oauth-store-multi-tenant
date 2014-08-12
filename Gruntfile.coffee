@@ -12,9 +12,7 @@ module.exports = (grunt) ->
 
   filterGrunt().forEach grunt.loadNpmTasks
 
-  config =
-    #release:
-    #  options:
+  grunt.initConfig
     coffee:
       compile:
         options:
@@ -55,7 +53,7 @@ module.exports = (grunt) ->
         require: ['coffee-script/register','should']
       all: ['test/**/*-tests.coffee']
 
-  config.watch =
+    watch:
       scripts:
         files: ['src/**/*.coffee']
         tasks: ['build']
@@ -67,8 +65,6 @@ module.exports = (grunt) ->
         tasks: ['build']
         options:
           livereload: false
-
-  grunt.initConfig config
 
 
   grunt.registerTask "install", [
