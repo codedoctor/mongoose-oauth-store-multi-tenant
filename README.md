@@ -6,13 +6,50 @@
 [![Issues](http://img.shields.io/github/issues/codedoctor/mongoose-oauth-store-multi-tenant.svg)](https://github.com/codedoctor/mongoose-oauth-store-multi-tenant/issues)
 [![API Documentation](http://img.shields.io/badge/API-Documentation-ff69b4.svg)](http://coffeedoc.info/github/codedoctor/mongoose-oauth-store-multi-tenant)
 
-
+WARNING - THIS WILL BE REFACTORED (AUG 2014) - USE AT YOUR OWN RISK FOR NOW.
 
 mongoose-oauth-store-multi-tenant
 =================================
 
-A bunch of mongoose schemas to implement identity management (accesstokens, oauth apps) in multi tenant scenarios
+A bunch of mongoose schemas to implement identity management (accesstokens, oauth apps) in multi tenant scenarios.
 
+## Key Concepts
+
+* Each document in the database has a _tenantId. This _tenantId (formerly accountId) can be a fixed ObjectId in single tenant scenarios.
+
+* You should not have to work with the schemas directly, instead we expose methods that encapsulate the most common use cases.
+
+## Getting started
+
+```coffeescript
+mongooseOauthStoreMultiTenant = require 'mongoose-oauth-store-multi-tenant'
+
+oauthProvider = 
+      "authorizeUrl": "/oauth/authorize"
+      "accessTokenUrl": "/oauth/token"
+      "scopes": [
+        {"name": "read", "description": "Allows read access to your data.", "developerDescription": "", "roles": ["public"]},
+        {"name": "write", "description": "Allows write access to your data.", "developerDescription": "", "roles": ["public"]},
+        {"name": "email", "description": "Allows access to your email address.", "developerDescription": "", "roles": ["public"]},
+        {"name": "admin", "description": "Allows full admin access to the platform.", "developerDescription": "", "roles": ["admin"]}
+      ]
+
+
+oauthStore = mongooseOauthStoreMultiTenant.store 
+                        oauthProvider : oauthProvider
+                        autoIndex : true # True for debug / false for production
+
+```
+## Accessing functionality
+
+```coffeescript
+
+oauthStore.oauthAuth. ...
+oauthStore.oauthScopes. ...
+oauthStore.oauthApps. ...
+oauthStore.admin. ...
+
+```
 
 ## Contributing to mongoose-oauth-store-multi-tenant
  
@@ -26,7 +63,7 @@ A bunch of mongoose schemas to implement identity management (accesstokens, oaut
 
 ## Copyright
 
-Copyright (c) 2012 Martin Wawrusch See LICENSE for
+Copyright (c) 2012 - 2014 Martin Wawrusch See LICENSE for
 further details.
 
 
