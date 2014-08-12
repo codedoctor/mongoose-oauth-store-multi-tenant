@@ -26,11 +26,9 @@
   },
   "dependencies": {
     "async": "0.9.0",
-    "bcryptjs": "0.7.10",
-    "boom": "2.5.0",
-    "date-utils": "1.2.14",
+    "boom": "2.5.1",
+    "date-utils": "1.2.16",
     "hoek": "2.4.1",
-    "mongodb-objectid-helper": "0.2.0",
     "mongoose-plugins-accessible-by": "0.2.2",
     "mongoose-plugins-created-by": "0.4.1",
     "mongoose-plugins-delete-paranoid": "0.2.0",
@@ -39,8 +37,6 @@
     "mongoose-plugins-timestamp": "0.2.0",
     "mongoose-rest-helper": "0.1.7",
     "passgen": "1.0.1",
-    "simple-paginator": "0.2.1",
-    "some-errors": "0.2.0",
     "underscore": "1.6.0",
     "underscore-ext": "0.2.0"
   },

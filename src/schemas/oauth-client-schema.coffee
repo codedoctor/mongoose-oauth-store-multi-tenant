@@ -1,5 +1,4 @@
 mongoose = require 'mongoose'
-Schema = mongoose.Schema
 passgen = require 'passgen'
 
 module.exports = OauthClientSchema = new mongoose.Schema

@@ -1,9 +1,10 @@
 _ = require 'underscore-ext'
-errors = require 'some-errors'
-PageResult = require('simple-paginator').PageResult
+Boom = require 'boom'
+Hoek = require 'hoek'
 mongoose = require "mongoose"
-ObjectId = mongoose.Types.ObjectId
 mongooseRestHelper = require 'mongoose-rest-helper'
+ObjectId = mongoose.Types.ObjectId
+passgen = require 'passgen'
 
 module.exports = class OauthAppMethods
   KEY_LENGTH = 20
@@ -26,7 +27,7 @@ module.exports = class OauthAppMethods
 
     objs._tenantId = new ObjectId _tenantId.toString()
 
-    @models.Scope.find _tenantId : objs._tenantId, (err, scopes) =>
+    @models.OauthScope.find _tenantId : objs._tenantId, (err, scopes) =>
       return cb err if err
   
       optionalClientId = objs.clientId

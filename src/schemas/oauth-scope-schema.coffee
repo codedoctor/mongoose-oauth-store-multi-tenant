@@ -1,6 +1,6 @@
 mongoose = require 'mongoose'
 
-module.exports = ScopeSchema = new mongoose.Schema
+module.exports = OauthScopeSchema = new mongoose.Schema
     _tenantId:
       type: mongoose.Schema.ObjectId
       require: true
@@ -17,6 +17,6 @@ module.exports = ScopeSchema = new mongoose.Schema
       default: -> []
   ,
     strict: true
-    collection: 'identitymt.scopes'
+    collection: 'identitymt.oauthscopes'
 
-ScopeSchema.index({ _tenantId: 1,name: 1 },{ unique: true, sparse: false} );
+OauthScopeSchema.index({ _tenantId: 1,name: 1 },{ unique: true, sparse: false} );

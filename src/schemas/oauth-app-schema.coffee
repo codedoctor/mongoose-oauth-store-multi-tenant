@@ -1,6 +1,5 @@
 _ = require 'underscore'
 mongoose = require 'mongoose'
-Schema = mongoose.Schema
 OauthClientSchema = require './oauth-client-schema'
 OauthRedirectUriSchema = require './oauth-redirect-uri-schema'
 
@@ -9,7 +8,6 @@ pluginCreatedBy = require "mongoose-plugins-created-by"
 pluginDeleteParanoid = require "mongoose-plugins-delete-paranoid"
 pluginTagsSimple = require "mongoose-plugins-tags-simple"
 pluginAccessibleBy = require "mongoose-plugins-accessible-by"
-errors = require 'some-errors'
 
 StatsType =
   tokensGranted:
@@ -18,7 +16,6 @@ StatsType =
   tokensRevoked:
     type : Number
     default : 0
-
 
 module.exports = OauthAppSchema = new mongoose.Schema
       _tenantId:
@@ -86,7 +83,6 @@ OauthAppSchema.plugin pluginCreatedBy.createdBy, {isRequired : false, v:2, keepV
 OauthAppSchema.plugin pluginDeleteParanoid.deleteParanoid
 OauthAppSchema.plugin pluginTagsSimple.tagsSimple
 OauthAppSchema.plugin pluginAccessibleBy.accessibleBy, defaultIsPublic : false
-
 
 OauthAppSchema.virtual('key').get ->
   @clients[0].clientId

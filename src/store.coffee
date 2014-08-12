@@ -6,7 +6,7 @@ OauthAccessTokenSchema = require './schemas/oauth-access-token-schema'
 OauthAppSchema = require './schemas/oauth-app-schema'
 OauthClientSchema = require './schemas/oauth-client-schema'
 OauthRedirectUriSchema = require './schemas/oauth-redirect-uri-schema'
-ScopeSchema = require './schemas/scope-schema'
+OauthScopeSchema = require './schemas/oauth-scope-schema'
 
 AdminMethods = require './methods/admin-methods'
 OauthAppMethods = require './methods/oauth-app-methods'
@@ -31,7 +31,7 @@ module.exports = class Store
       OauthAppSchema
       OauthClientSchema
       OauthRedirectUriSchema
-      ScopeSchema
+      OauthScopeSchema
     ]
 
     @settings.initializeSchema schema for schema in @schemas
@@ -44,7 +44,7 @@ module.exports = class Store
       OauthAccessGrant : m.model "OAuthAccessGrant", OauthAccessGrantSchema
       OauthAccessToken : m.model "OauthAccessToken", OauthAccessTokenSchema
       OauthApp : m.model "OauthApp", OauthAppSchema
-      Scope: m.model "Scope",ScopeSchema
+      OauthScope: m.model "OauthScope",OauthScopeSchema
     
     @oauthAuth = new OauthAuthMethods @models
     @oauthScopes =  new OauthScopeMethods @models

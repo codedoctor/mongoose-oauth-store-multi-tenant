@@ -1,10 +1,10 @@
 _ = require 'underscore-ext'
-errors = require 'some-errors'
+async = require 'async'
+Boom = require 'boom'
+Hoek = require 'hoek'
 mongoose = require "mongoose"
 ObjectId = mongoose.Types.ObjectId
-bcrypt = require 'bcryptjs'
-passgen = require 'passgen'
-async = require 'async'
+
 
 ###
 Provides methods to interact with scotties.

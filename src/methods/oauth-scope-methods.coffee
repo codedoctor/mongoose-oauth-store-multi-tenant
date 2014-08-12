@@ -1,10 +1,11 @@
 _ = require 'underscore-ext'
+Boom = require 'boom'
+Hoek = require 'hoek'
+mongoose = require "mongoose"
+mongooseRestHelper = require 'mongoose-rest-helper'
+ObjectId = mongoose.Types.ObjectId
 
 Scope = require('../scope').Scope
-PageResult = require('simple-paginator').PageResult
-mongoose = require "mongoose"
-ObjectId = mongoose.Types.ObjectId
-mongooseRestHelper = require 'mongoose-rest-helper'
 
 
 ###
@@ -56,14 +57,14 @@ module.exports = class OauthScopeMethods
         defaultSort: 'name'
         defaultSelect: null
         defaultCount: 1000
-    mongooseRestHelper.all @models.Scope,settings,options, cb
+    mongooseRestHelper.all @models.OauthScope,settings,options, cb
 
   ###
   Get a scope for it's id.
   ###
   get: (scopeId,options = {}, cb = ->) =>
     return cb new Error "scopeId parameter is required." unless scopeId
-    mongooseRestHelper.getById @models.Scope,scopeId,null,options, cb
+    mongooseRestHelper.getById @models.OauthScope,scopeId,null,options, cb
 
 
   ###
@@ -73,7 +74,7 @@ module.exports = class OauthScopeMethods
     return cb new Error "_tenantId parameter is required." unless _tenantId
     settings = {}
     objs._tenantId = new ObjectId _tenantId.toString()
-    mongooseRestHelper.create @models.Scope,settings,objs,options,cb
+    mongooseRestHelper.create @models.OauthScope,settings,objs,options,cb
 
   ###
   Completely destroys an organization.
@@ -81,7 +82,7 @@ module.exports = class OauthScopeMethods
   destroy: (scopeId, options = {}, cb = ->) =>
     return cb new Error "scopeId parameter is required." unless scopeId
     settings = {}
-    mongooseRestHelper.destroy @models.Scope,scopeId, settings,{}, cb
+    mongooseRestHelper.destroy @models.OauthScope,scopeId, settings,{}, cb
 
 
   ###
@@ -91,6 +92,6 @@ module.exports = class OauthScopeMethods
     return cb new Error "scopeId parameter is required." unless scopeId
     settings =
       exclude : UPDATE_EXCLUDEFIELDS
-    mongooseRestHelper.patch @models.Scope,scopeId, settings, obj, options, cb
+    mongooseRestHelper.patch @models.OauthScope,scopeId, settings, obj, options, cb
 
 

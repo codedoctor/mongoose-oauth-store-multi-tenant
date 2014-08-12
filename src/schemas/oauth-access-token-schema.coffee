@@ -1,10 +1,6 @@
 mongoose = require 'mongoose'
-Schema = mongoose.Schema
 passgen = require 'passgen'
 pluginTimestamp = require "mongoose-plugins-timestamp"
-
-# Need:  clientId:
-#    type : String
 
 ###
 THe actual token. The token itself is the _id as a lowercase string
@@ -15,7 +11,7 @@ module.exports = OauthAccessTokenSchema = new mongoose.Schema
       require: true
 
     appId:
-      type: Schema.ObjectId
+      type: mongoose.Schema.ObjectId
     ###
     The identity to whom the token was issued. This can be any kind of string.
     ###
@@ -41,8 +37,7 @@ module.exports = OauthAccessTokenSchema = new mongoose.Schema
     The user id of the entity this was issued to, if available.
     ###
     identityUserId:
-      type: Schema.ObjectId
-      ref: 'User'
+      type: mongoose.Schema.ObjectId
 
     expiresAt:
       type: Date

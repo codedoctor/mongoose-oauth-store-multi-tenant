@@ -13,13 +13,11 @@ class Helper
   _tenantId : '52998e1c32e5724771000009'
   database :  'mongodb://localhost/codedoctor-test'
   collections : [
+    'identitymt.oauthaccessgrants'
     'identitymt.oauthaccesstokens'
     'identitymt.oauthapps'
     'identitymt.oauthclients'
-    'identitymt.organizations'
-    'identitymt.users'
-    'identitymt.roles'
-    'identitymt.scopes'
+    'identitymt.oauthscopes'
   ]
 
   start: (obj = {}, done = ->) =>

@@ -1,5 +1,4 @@
 mongoose = require 'mongoose'
-Schema = mongoose.Schema
 
 ###
 A single, one time usable, access grant.
@@ -10,7 +9,7 @@ module.exports  = OauthAccessGrantSchema = new mongoose.Schema
         require: true
 
       appId:
-        type: Schema.ObjectId
+        type: mongoose.Schema.ObjectId
 
       realm:
         type: String
@@ -29,8 +28,7 @@ module.exports  = OauthAccessGrantSchema = new mongoose.Schema
       The user id of the entity this was issued to, if available.
       ###
       identityUserId:
-        type: Schema.ObjectId
-        ref: 'User'
+        type: mongoose.Schema.ObjectId
 
       redirectUrl:
         type: String
@@ -56,7 +54,7 @@ module.exports  = OauthAccessGrantSchema = new mongoose.Schema
         default : null
 
       accessTokenId:
-        type: Schema.ObjectId
+        type: mongoose.Schema.ObjectId
         default: null
-        #ref: 'AccessToken'
     , strict : true
+    collection: 'identitymt.oauthaccessgrants'

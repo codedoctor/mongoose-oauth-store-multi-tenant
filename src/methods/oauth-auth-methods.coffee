@@ -1,10 +1,9 @@
 _ = require 'underscore-ext'
-
-PageResult = require('simple-paginator').PageResult
-passgen = require('passgen')
+Boom = require 'boom'
+Hoek = require 'hoek'
 mongoose = require "mongoose"
-ObjectId = mongoose.Types.ObjectId
 mongooseRestHelper = require 'mongoose-rest-helper'
+ObjectId = mongoose.Types.ObjectId
 
 
 ###
