@@ -43,16 +43,26 @@
   </dt>
   <dd>
     <pre><code class='coffeescript'>{
-  errorTenantIdRequired: &quot;_tenantId parameter is required.&quot;,
-  assertOauthScopeInModels: &quot;@models must contain an OauthScope model.&quot;,
-  assertModelsRequired: &quot;@models parameter is required.&quot;,
-  assertOauthAppInModels: &quot;@models must contain an OauthApp model.&quot;,
-  assertOauthAccessTokenInModels: &quot;@models must contain an OauthAccessToken model.&quot;,
-  assertOauthAccessGrantInModels: &quot;@models must contain an OauthAccessGrant model.&quot;,
-  errorUserIdRequired: &quot;userId is missing&quot;,
-  errorAppIdRequired: &quot;appId parameter is missing&quot;,
-  errorRedirectUrlRequired: &quot;redirectUrl is missing&quot;,
-  errorScopeRequiredAndArrayAndMinOne: &quot;scope parameter is either missing, not an array or does not contain any items.&quot;
+  assertModelsRequired: &quot;Required parameter &#39;@models&#39; is missing.&quot;,
+  assertOauthAppInModels: &quot;@models must contain an &#39;OauthApp&#39; model.&quot;,
+  assertOauthScopeInModels: &quot;@models must contain an &#39;OauthScope&#39; model.&quot;,
+  assertOauthAccessTokenInModels: &quot;@models must contain an &#39;OauthAccessToken&#39; model.&quot;,
+  assertOauthAccessGrantInModels: &quot;@models must contain an &#39;OauthAccessGrant&#39; model.&quot;,
+  assertOauthScopeMethods: &quot;Required parameter &#39;@oauthScopeMethods&#39; parameter is missing&quot;,
+  errorTenantIdRequired: &quot;Required parameter &#39;_tenantId&#39; is missing.&quot;,
+  errorUserIdRequired: &quot;Required parameter &#39;userId&#39; is missing.&quot;,
+  errorRedirectUrlRequired: &quot;Required parameter &#39;redirectUrl&#39; is missing.&quot;,
+  errorScopeRequiredAndArrayAndMinOne: &quot;Required parameter &#39;scope&#39; is either missing, not an array or does not contain any items.&quot;,
+  errorOwningUserIdRequired: &quot;Required parameter &#39;owningUserId&#39; parameter is missing.&quot;,
+  errorOauthAppIdRequired: &quot;Required parameter &#39;oauthId&#39; parameter is missing.&quot;,
+  errorClientIdRequired: &quot;Required parameter &#39;clientId&#39; is missing.&quot;,
+  errorOauthScopeIdRequired: &quot;Required parameter &#39;oauthScopeId&#39; parameter is missing.&quot;,
+  errorTokenRequired: &quot;Required parameter &#39;token&#39; is missing.&quot;,
+  errorRefreshTokenRequired: &quot;Required parameter &#39;refreshToken&#39; is missing.&quot;,
+  errorCodeRequired: &quot;Required parameter &#39;code&#39; is missing.&quot;,
+  accessGrantNotFound: &quot;Access grant does not exist.&quot;,
+  tokenNotFound: &quot;Token does not exist.&quot;,
+  prefixErrorNoAppForClientId: &quot;Could not find app for clientId&quot;
 }</code></pre>
     <div class='docstring'>
   <p>Translatable and non translatable messages for this module.</p>
@@ -63,7 +73,7 @@
 </dl>
     </div>
     <div id='footer'>
-  August 12, 14 15:44:26 by
+  August 12, 14 16:38:32 by
   <a href='https://github.com/coffeedoc/codo' title='CoffeeScript API documentation generator'>
     Codo
   </a>

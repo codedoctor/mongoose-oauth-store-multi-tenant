@@ -190,7 +190,7 @@ module.exports = class OauthAuthMethods
         appId: accessGrant.appId
         identityUserId: accessGrant.userId
         realm: accessGrant.realm
-        expiresAt: @currentDateAndSeconds(DEFAULT_EXPIRATION) # PROBABLY TOTALLY WRONG
+        expiresAt: @currentDateAndSeconds(DEFAULT_EXPIRATION) 
         scope: accessGrant.scope
 
       token.save (err) =>
@@ -229,7 +229,7 @@ module.exports = class OauthAuthMethods
           appId: token.appId
           identityUserId: token.userId
           realm: token.realm
-          expiresAt: @currentDateAndSeconds(DEFAULT_EXPIRATION) # PROBABLY TOTALLY WRONG
+          expiresAt: @currentDateAndSeconds(DEFAULT_EXPIRATION) 
           scope: token.scope
 
         newToken.save (err) =>
