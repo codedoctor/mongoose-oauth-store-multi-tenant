@@ -9,6 +9,7 @@ module.exports =
   assertOauthAccessGrantInModels : "@models must contain an 'OauthAccessGrant' model."
   assertOauthScopeMethods: "Required parameter '@oauthScopeMethods' parameter is missing"
 
+  errorAtLeastOneUserRequired: "The input requires at least one user record."
   errorTenantIdRequired: "Required parameter '_tenantId' is missing."
   errorUserIdRequired: "Required parameter 'userId' is missing."
   errorRedirectUrlRequired: "Required parameter 'redirectUrl' is missing."

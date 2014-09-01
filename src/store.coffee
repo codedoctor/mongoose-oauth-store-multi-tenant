@@ -8,7 +8,6 @@ OauthClientSchema = require './schemas/oauth-client-schema'
 OauthRedirectUriSchema = require './schemas/oauth-redirect-uri-schema'
 OauthScopeSchema = require './schemas/oauth-scope-schema'
 
-AdminMethods = require './methods/admin-methods'
 OauthAppMethods = require './methods/oauth-app-methods'
 OauthAuthMethods = require './methods/oauth-auth-methods'
 OauthScopeMethods = require './methods/oauth-scope-methods'
@@ -49,5 +48,4 @@ module.exports = class Store
     @oauthAuth = new OauthAuthMethods @models
     @oauthScopes =  new OauthScopeMethods @models
     @oauthApps = new OauthAppMethods @models, @oauthScopes
-    @admin = new AdminMethods @models, @users, @oauthApps, @oauthAuth,@oauthScopes
 

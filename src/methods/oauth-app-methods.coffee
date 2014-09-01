@@ -34,11 +34,15 @@ module.exports = class OauthAppMethods
 
     @models.OauthScope.find _tenantId : objs._tenantId, (err, scopes) =>
       return cb err if err
+
+      scopes = _.reject scopes || [], (x) -> x.isInternal
   
       optionalClientId = objs.clientId
       optionalSecret = objs.secret
 
-      objs.scopes = _.pluck(scopes || [], "name")
+      unless objs.scopes and objs.scopes.length > 0
+        objs.scopes = _.pluck(scopes || [], "name")
+  
       model = new @models.OauthApp objs
 
       if objs.callbackUrl
@@ -50,7 +54,7 @@ module.exports = class OauthAppMethods
       oAuthClient.clientId = optionalClientId if optionalClientId
       oAuthClient.secret = optionalSecret if optionalSecret
 
-      model.clients.push oAuthClient
+      model.clients = [ oAuthClient ]
       model.save (err) =>
         return cb err if err
         cb null, model

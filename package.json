@@ -1,8 +1,8 @@
 {
   "author": "Martin Wawrusch <martin@wawrusch.com> (http://martinatsunset.com)",
   "name": "mongoose-oauth-store-multi-tenant",
-  "description": "A bunch of mongoose schemas to implement identity management (users, accesstokens, oauth apps)",
-  "version": "1.1.0",
+  "description": "A bunch of mongoose schemas to implement identity management (accesstokens, oauth apps) in multi tenant scenarios.",
+  "version": "1.2.0",
   "main": "lib/index.js",
   "repository": {
     "type": "git",
@@ -36,7 +36,7 @@
     "mongoose-plugins-timestamp": "0.2.x",
     "mongoose-rest-helper": "1.0.x",
     "passgen": "1.0.1",
-    "underscore": "1.6.0"
+    "underscore": "1.7.0"
   },
   "peerDependencies": {
     "mongoose": ">=3.8.14"
@@ -44,20 +44,20 @@
   "devDependencies": {
     "blanket": "1.1.6",
     "codo": "2.0.9",
-    "coffee-script": "1.7.1",
+    "coffee-script": "1.8.0",
     "grunt": "0.4.5",
     "grunt-cli": "0.1.13",
     "grunt-codo": "0.2.0",
-    "grunt-contrib-coffee": "0.11.0",
+    "grunt-contrib-coffee": "0.11.1",
     "grunt-contrib-watch": "0.6.1",
     "grunt-env": "0.4.1",
     "grunt-mocha-cov": "0.3.0",
     "grunt-mocha-test": "0.11.0",
     "grunt-release": "0.7.0",
-    "grunt-shell": "0.7.0",
+    "grunt-shell": "1.0.1",
     "matchdep": "0.3.0",
     "mocha": "1.21.4",
-    "mongoose": "3.8.14",
+    "mongoose": "3.8.15",
     "mongoskin": "1.4.4",
     "should": "4.0.4"
   },

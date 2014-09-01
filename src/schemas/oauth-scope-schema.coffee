@@ -12,6 +12,9 @@ module.exports = OauthScopeSchema = new mongoose.Schema
     developerDescription:
       type : String
       default: ''
+    isInternal:
+      type: Boolean
+      default: false
     roles:
       type: [String]
       default: -> []
