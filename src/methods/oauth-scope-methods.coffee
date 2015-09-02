@@ -4,9 +4,6 @@ Hoek = require 'hoek'
 mongooseRestHelper = require 'mongoose-rest-helper'
 i18n = require '../i18n'
 
-fnUnprocessableEntity = (message = "",data) ->
-  return Boom.create 422, message, data
-
 ###
 Provides methods to interact with the scope store.
 ###
@@ -20,8 +17,13 @@ module.exports = class OauthScopeMethods
   ###
   Returns all the scopes for a given _tenantId
   ###
-  all: (_tenantId,options = {},cb = ->) =>
-    return cb fnUnprocessableEntity( i18n.errorTenantIdRequired) unless _tenantId
+  all: (_tenantId,options = {},cb) =>
+    if _.isFunction(options)
+      cb = options 
+      options = {}
+    Hoek.assert _.isFunction(cb),"The required parameter cb is missing or not a function."
+
+    return cb Boom.badData( i18n.errorTenantIdRequired) unless _tenantId
 
     settings = 
         baseQuery:
@@ -34,16 +36,26 @@ module.exports = class OauthScopeMethods
   ###
   Get a scope for it's id.
   ###
-  get: (oauthScopeId,options = {}, cb = ->) =>
-    return cb fnUnprocessableEntity( i18n.errorOauthScopeIdRequired) unless oauthScopeId
+  get: (oauthScopeId,options = {}, cb) =>
+    if _.isFunction(options)
+      cb = options 
+      options = {}
+    Hoek.assert _.isFunction(cb),"The required parameter cb is missing or not a function."
+
+    return cb Boom.badData( i18n.errorOauthScopeIdRequired) unless oauthScopeId
     mongooseRestHelper.getById @models.OauthScope,oauthScopeId,null,options, cb
 
 
   ###
   Create a new OauthScope object
   ###
-  create:(_tenantId,objs = {}, options = {}, cb = ->) =>
-    return cb fnUnprocessableEntity( i18n.errorTenantIdRequired) unless _tenantId
+  create:(_tenantId,objs = {}, options = {}, cb) =>
+    if _.isFunction(options)
+      cb = options 
+      options = {}
+    Hoek.assert _.isFunction(cb),"The required parameter cb is missing or not a function."
+
+    return cb Boom.badData( i18n.errorTenantIdRequired) unless _tenantId
 
     settings = {}
     objs._tenantId = mongooseRestHelper.asObjectId _tenantId
@@ -52,16 +64,26 @@ module.exports = class OauthScopeMethods
   ###
   Completely destroys an OauthScope object
   ###
-  destroy: (oauthScopeId, options = {}, cb = ->) =>
-    return cb fnUnprocessableEntity( i18n.errorOauthScopeIdRequired) unless oauthScopeId
+  destroy: (oauthScopeId, options = {}, cb) =>
+    if _.isFunction(options)
+      cb = options 
+      options = {}
+    Hoek.assert _.isFunction(cb),"The required parameter cb is missing or not a function."
+
+    return cb Boom.badData( i18n.errorOauthScopeIdRequired) unless oauthScopeId
     settings = {}
     mongooseRestHelper.destroy @models.OauthScope,oauthScopeId, settings,{}, cb
 
   ###
   Updates an OauthScope.
   ###
-  patch: (oauthScopeId, obj = {}, options = {}, cb = ->) =>
-    return cb fnUnprocessableEntity( i18n.errorOauthScopeIdRequired) unless oauthScopeId
+  patch: (oauthScopeId, obj = {}, options = {}, cb) =>
+    if _.isFunction(options)
+      cb = options 
+      options = {}
+    Hoek.assert _.isFunction(cb),"The required parameter cb is missing or not a function."
+
+    return cb Boom.badData( i18n.errorOauthScopeIdRequired) unless oauthScopeId
     settings =
       exclude : UPDATE_EXCLUDEFIELDS
     mongooseRestHelper.patch @models.OauthScope,oauthScopeId, settings, obj, options, cb

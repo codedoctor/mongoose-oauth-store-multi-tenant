@@ -4,9 +4,6 @@ Hoek = require 'hoek'
 mongooseRestHelper = require 'mongoose-rest-helper'
 i18n = require '../i18n'
 
-fnUnprocessableEntity = (message = "",data) ->
-  return Boom.create 422, message, data
-
 ###
 Provides methods to interact with the auth store.
 ###
@@ -39,12 +36,13 @@ module.exports = class OauthAuthMethods
   Retrieves an app for a key. This ONLY retrieves active keys
   @param {string} appKey the application key to retrieve the app for.
   ###
-  appForClientId:(clientId,options = {}, cb = ->) =>
+  appForClientId:(clientId,options = {}, cb) =>
     if _.isFunction(options)
       cb = options 
       options = {}
+    Hoek.assert _.isFunction(cb),"The required parameter cb is missing or not a function."
 
-    return cb fnUnprocessableEntity( i18n.errorClientIdRequired) unless clientId
+    return cb Boom.badData( i18n.errorClientIdRequired) unless clientId
 
     @models.OauthApp.findOne 'clients.clientId' : clientId, (err, item) =>
       return cb err if err
@@ -56,13 +54,14 @@ module.exports = class OauthAuthMethods
   has an expiration higher than now.
   isClientValid can be checked for tighter security.
   ###
-  validate: (token, clientId,options = {}, cb = ->) =>
-    return cb fnUnprocessableEntity( i18n.errorTokenRequired) unless token
-    return cb fnUnprocessableEntity( i18n.errorClientIdRequired) unless clientId
-
+  validate: (token, clientId,options = {}, cb) =>
     if _.isFunction(options)
       cb = options 
       options = {}
+    Hoek.assert _.isFunction(cb),"The required parameter cb is missing or not a function."
+    return cb Boom.badData( i18n.errorTokenRequired) unless token
+    return cb Boom.badData( i18n.errorClientIdRequired) unless clientId
+
 
     @models.OauthAccessToken.findOne _id : token, (err, item) =>
       return cb err  if err
@@ -86,18 +85,19 @@ module.exports = class OauthAuthMethods
   @param {String} realm an optional realm for which this access grant is for.
   @param {Callback} cb the callback that will be invoked, with err and the mongoose AccessGrant model.
   ###
-  createAccessGrant: (_tenantId,oauthAppId, userId, redirectUrl, scope, realm = null, options = {}, cb = ->) =>
+  createAccessGrant: (_tenantId,oauthAppId, userId, redirectUrl, scope, realm = null, options = {}, cb) =>
     if _.isFunction(options)
       cb = options 
       options = {}
+    Hoek.assert _.isFunction(cb),"The required parameter cb is missing or not a function."
 
     scope = [scope] if _.isString(scope)
 
-    return cb fnUnprocessableEntity( i18n.errorTenantIdRequired) unless _tenantId
-    return cb fnUnprocessableEntity( i18n.errorOauthAppIdRequired) unless oauthAppId
-    return cb fnUnprocessableEntity( i18n.errorUserIdRequired) unless userId
-    return cb fnUnprocessableEntity( i18n.errorRedirectUrlRequired) unless redirectUrl
-    return cb fnUnprocessableEntity( i18n.errorScopeRequiredAndArrayAndMinOne) unless scope && _.isArray(scope) && scope.length > 0
+    return cb Boom.badData( i18n.errorTenantIdRequired) unless _tenantId
+    return cb Boom.badData( i18n.errorOauthAppIdRequired) unless oauthAppId
+    return cb Boom.badData( i18n.errorUserIdRequired) unless userId
+    return cb Boom.badData( i18n.errorRedirectUrlRequired) unless redirectUrl
+    return cb Boom.badData( i18n.errorScopeRequiredAndArrayAndMinOne) unless scope && _.isArray(scope) && scope.length > 0
 
     accessGrant = new @models.OauthAccessGrant
       _tenantId : _tenantId
@@ -115,22 +115,24 @@ module.exports = class OauthAuthMethods
   ###
   Creates a token for a user/app/realm
   ###
-  createOrReuseTokenForUserId: (_tenantId,userId, clientId, realm, scope , expiresIn,options = {}, cb = ->) =>
+  createOrReuseTokenForUserId: (_tenantId,userId, clientId, realm, scope , expiresIn,options = {}, cb) =>
     if _.isFunction(options)
       cb = options 
       options = {}
+    Hoek.assert _.isFunction(cb),"The required parameter cb is missing or not a function."
+
 
     scope = [scope] if _.isString scope
 
-    return cb fnUnprocessableEntity( i18n.errorTenantIdRequired) unless _tenantId
-    return cb fnUnprocessableEntity( i18n.errorUserIdRequired) unless userId
-    return cb fnUnprocessableEntity( i18n.errorClientIdRequired) unless clientId
+    return cb Boom.badData( i18n.errorTenantIdRequired) unless _tenantId
+    return cb Boom.badData( i18n.errorUserIdRequired) unless userId
+    return cb Boom.badData( i18n.errorClientIdRequired) unless clientId
 
     userId = mongooseRestHelper.asObjectId userId
 
     @appForClientId clientId, (err, app) =>
       return cb err if err
-      return cb new Error("Could not find app for clientId #{clientId}") unless app
+      return cb Boom.badRequest("Could not find app for clientId #{clientId}") unless app
 
       @models.OauthAccessToken.findOne {_tenantId : _tenantId, appId: app._id, identityUserId: userId}, (err,token) =>
         return cb err if err
@@ -142,16 +144,18 @@ module.exports = class OauthAuthMethods
   ###
   Creates a token for a user/app/realm
   ###
-  createTokenForUserId: (_tenantId, userId, clientId, realm =  null, scope = null, expiresIn = null, options = {}, cb = ->) =>
+  createTokenForUserId: (_tenantId, userId, clientId, realm =  null, scope = null, expiresIn = null, options = {}, cb) =>
     if _.isFunction(options)
       cb = options 
       options = {}
+    Hoek.assert _.isFunction(cb),"The required parameter cb is missing or not a function."
+
 
     scope = [scope] if _.isString scope
 
-    return cb fnUnprocessableEntity( i18n.errorTenantIdRequired) unless _tenantId
-    return cb fnUnprocessableEntity( i18n.errorUserIdRequired) unless userId
-    return cb fnUnprocessableEntity( i18n.errorClientIdRequired) unless clientId
+    return cb Boom.badData( i18n.errorTenantIdRequired) unless _tenantId
+    return cb Boom.badData( i18n.errorUserIdRequired) unless userId
+    return cb Boom.badData( i18n.errorClientIdRequired) unless clientId
 
     @appForClientId clientId, (err, app) =>
       return cb err if err
@@ -173,12 +177,14 @@ module.exports = class OauthAuthMethods
   Takes a code and exchanges it for an access token
   @param {String} code the authorization_code to exchange into an access token
   ###
-  exchangeAuthorizationCodeForAccessToken: (code,options = {}, cb = ->) =>
-    return cb fnUnprocessableEntity( i18n.errorCodeRequired) unless refreshToken
-
+  exchangeAuthorizationCodeForAccessToken: (code,options = {}, cb) =>
     if _.isFunction(options)
       cb = options 
       options = {}
+    Hoek.assert _.isFunction(cb),"The required parameter cb is missing or not a function."
+
+    return cb Boom.badData( i18n.errorCodeRequired) unless refreshToken
+
 
     @models.OauthAccessGrant.findOne _id: code, (err, accessGrant) =>
       return cb err if err
@@ -207,12 +213,14 @@ module.exports = class OauthAuthMethods
   Takes a code and exchanges it for an access token
   @param {String} refreshToken the refresh_token to exchange into an access token
   ###
-  exchangeRefreshTokenForAccessToken: (refreshToken, options = {}, cb = ->) =>
-    return cb fnUnprocessableEntity( i18n.errorRefreshTokenRequired) unless refreshToken
-
+  exchangeRefreshTokenForAccessToken: (refreshToken, options = {}, cb) =>
     if _.isFunction(options)
       cb = options 
       options = {}
+    Hoek.assert _.isFunction(cb),"The required parameter cb is missing or not a function."
+
+    return cb Boom.badData( i18n.errorRefreshTokenRequired) unless refreshToken
+
 
     @models.OauthAccessToken.findOne refreshToken: refreshToken, (err, token) =>
       return cb err if err

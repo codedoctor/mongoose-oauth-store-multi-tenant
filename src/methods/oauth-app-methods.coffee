@@ -5,9 +5,6 @@ mongooseRestHelper = require 'mongoose-rest-helper'
 i18n = require '../i18n'
 passgen = require 'passgen'
 
-fnUnprocessableEntity = (message = "",data) ->
-  return Boom.create 422, message, data
-
 module.exports = class OauthAppMethods
   KEY_LENGTH = 20
   SECRET_LENGTH = 40
@@ -23,12 +20,13 @@ module.exports = class OauthAppMethods
   ###
   Create a new oauth client.
   ###
-  create:(_tenantId,objs = {},options={}, cb = ->) =>
-    return cb fnUnprocessableEntity( i18n.errorTenantIdRequired) unless _tenantId
-
+  create:(_tenantId,objs = {},options={}, cb) =>
     if _.isFunction(options)
       cb = options 
       options = {}
+    Hoek.assert _.isFunction(cb),"The required parameter cb is missing or not a function."
+
+    return cb Boom.badData( i18n.errorTenantIdRequired) unless _tenantId
 
     objs._tenantId = mongooseRestHelper.asObjectId _tenantId
 
@@ -63,8 +61,13 @@ module.exports = class OauthAppMethods
   ###
   Retrieves all oauth apps for a specific _tenantId
   ###
-  all:(_tenantId,options = {}, cb = ->) =>
-    return cb fnUnprocessableEntity( i18n.errorTenantIdRequired) unless _tenantId
+  all:(_tenantId,options = {}, cb) =>
+    if _.isFunction(options)
+      cb = options 
+      options = {}
+    Hoek.assert _.isFunction(cb),"The required parameter cb is missing or not a function."
+
+    return cb Boom.badData( i18n.errorTenantIdRequired) unless _tenantId
 
     settings = 
         baseQuery:
@@ -78,13 +81,14 @@ module.exports = class OauthAppMethods
   ###
   Retrieves apps for a specific user, within the _tenantId scope.
   ###
-  getAppsForUser:(_tenantId,owningUserId, options = {}, cb = ->) =>
-    return cb fnUnprocessableEntity( i18n.errorTenantIdRequired) unless _tenantId
-    return cb fnUnprocessableEntity( i18n.errorOwningUserIdRequired) unless owningUserId
-
+  getAppsForUser:(_tenantId,owningUserId, options = {}, cb) =>
     if _.isFunction(options)
       cb = options 
       options = {}
+    Hoek.assert _.isFunction(cb),"The required parameter cb is missing or not a function."
+
+    return cb Boom.badData( i18n.errorTenantIdRequired) unless _tenantId
+    return cb Boom.badData( i18n.errorOwningUserIdRequired) unless owningUserId
 
     options.where ||= {}
     options.where.createdByUserId = mongooseRestHelper.asObjectId owningUserId
@@ -94,27 +98,38 @@ module.exports = class OauthAppMethods
   ###
   returns a specific oauth app.
   ###
-  get: (oauthAppId,options={}, cb = ->) =>
-    return cb fnUnprocessableEntity( i18n.errorOauthAppIdRequired) unless oauthAppId
+  get: (oauthAppId,options={}, cb) =>
+    if _.isFunction(options)
+      cb = options 
+      options = {}
+    Hoek.assert _.isFunction(cb),"The required parameter cb is missing or not a function."
+
+    return cb Boom.badData( i18n.errorOauthAppIdRequired) unless oauthAppId
     mongooseRestHelper.getById @models.OauthApp,oauthAppId,null,options, cb
 
   ###
   Completely destroys an oauth app.
   ###
-  destroy: (oauthAppId,options = {}, cb = ->) =>
-    return cb fnUnprocessableEntity( i18n.errorOauthAppIdRequired) unless oauthAppId
+  destroy: (oauthAppId,options = {}, cb) =>
+    if _.isFunction(options)
+      cb = options 
+      options = {}
+    Hoek.assert _.isFunction(cb),"The required parameter cb is missing or not a function."
+
+    return cb Boom.badData( i18n.errorOauthAppIdRequired) unless oauthAppId
     settings = {}
     mongooseRestHelper.destroy @models.OauthApp,oauthAppId, settings,{}, cb
 
   ###
   Reset the app keys for an oauth app.
   ###
-  resetAppKeys: (oauthAppId,options = {}, cb = ->) =>
-    return cb fnUnprocessableEntity( i18n.errorOauthAppIdRequired) unless oauthAppId
-
+  resetAppKeys: (oauthAppId,options = {}, cb) =>
     if _.isFunction(options)
       cb = options 
       options = {}
+    Hoek.assert _.isFunction(cb),"The required parameter cb is missing or not a function."
+
+    return cb Boom.badData( i18n.errorOauthAppIdRequired) unless oauthAppId
 
     oauthAppId = mongooseRestHelper.asObjectId oauthAppId
     @models.OauthApp.findOne _id : oauthAppId, (err, item) =>
@@ -130,8 +145,13 @@ module.exports = class OauthAppMethods
   ###
   Update an app.
   ###
-  patch: (oauthAppId, obj = {},options = {}, cb = ->) =>
-    return cb fnUnprocessableEntity( i18n.errorOauthAppIdRequired) unless oauthAppId
+  patch: (oauthAppId, obj = {},options = {}, cb) =>
+    if _.isFunction(options)
+      cb = options 
+      options = {}
+    Hoek.assert _.isFunction(cb),"The required parameter cb is missing or not a function."
+
+    return cb Boom.badData( i18n.errorOauthAppIdRequired) unless oauthAppId
 
     settings =
       exclude : UPDATE_EXCLUDEFIELDS

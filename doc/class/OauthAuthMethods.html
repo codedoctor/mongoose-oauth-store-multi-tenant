@@ -59,7 +59,7 @@
       <a href='#appForClientId-dynamic'>
         #
 (void)
-<b>appForClientId</b><span>(clientId, options = {}, cb = function() {})</span>
+<b>appForClientId</b><span>(clientId, options = {}, cb)</span>
       </a>
     </span>
     <span class='bound note title'>Bound</span>
@@ -72,7 +72,7 @@
       <a href='#validate-dynamic'>
         #
 (void)
-<b>validate</b><span>(token, clientId, options = {}, cb = function() {})</span>
+<b>validate</b><span>(token, clientId, options = {}, cb)</span>
       </a>
     </span>
     <span class='bound note title'>Bound</span>
@@ -85,7 +85,7 @@
       <a href='#createAccessGrant-dynamic'>
         #
 (void)
-<b>createAccessGrant</b><span>(_tenantId, oauthAppId, userId, redirectUrl, scope, realm = null, options = {}, cb = function() {})</span>
+<b>createAccessGrant</b><span>(_tenantId, oauthAppId, userId, redirectUrl, scope, realm = null, options = {}, cb)</span>
       </a>
     </span>
     <span class='bound note title'>Bound</span>
@@ -98,7 +98,7 @@
       <a href='#createOrReuseTokenForUserId-dynamic'>
         #
 (void)
-<b>createOrReuseTokenForUserId</b><span>(_tenantId, userId, clientId, realm, scope, expiresIn, options = {}, cb = function() {})</span>
+<b>createOrReuseTokenForUserId</b><span>(_tenantId, userId, clientId, realm, scope, expiresIn, options = {}, cb)</span>
       </a>
     </span>
     <span class='bound note title'>Bound</span>
@@ -111,7 +111,7 @@
       <a href='#createTokenForUserId-dynamic'>
         #
 (void)
-<b>createTokenForUserId</b><span>(_tenantId, userId, clientId, realm = null, scope = null, expiresIn = null, options = {}, cb = function() {})</span>
+<b>createTokenForUserId</b><span>(_tenantId, userId, clientId, realm = null, scope = null, expiresIn = null, options = {}, cb)</span>
       </a>
     </span>
     <span class='bound note title'>Bound</span>
@@ -124,7 +124,7 @@
       <a href='#exchangeAuthorizationCodeForAccessToken-dynamic'>
         #
 (void)
-<b>exchangeAuthorizationCodeForAccessToken</b><span>(code, options = {}, cb = function() {})</span>
+<b>exchangeAuthorizationCodeForAccessToken</b><span>(code, options = {}, cb)</span>
       </a>
     </span>
     <span class='bound note title'>Bound</span>
@@ -137,7 +137,7 @@
       <a href='#exchangeRefreshTokenForAccessToken-dynamic'>
         #
 (void)
-<b>exchangeRefreshTokenForAccessToken</b><span>(refreshToken, options = {}, cb = function() {})</span>
+<b>exchangeRefreshTokenForAccessToken</b><span>(refreshToken, options = {}, cb)</span>
       </a>
     </span>
     <span class='bound note title'>Bound</span>
@@ -208,7 +208,7 @@
     <p class='signature' id='appForClientId-dynamic'>
       #
 (void)
-<b>appForClientId</b><span>(clientId, options = {}, cb = function() {})</span>
+<b>appForClientId</b><span>(clientId, options = {}, cb)</span>
       <span class='bound note'>Bound</span>
       <br>
     </p>
@@ -235,7 +235,7 @@
     <p class='signature' id='validate-dynamic'>
       #
 (void)
-<b>validate</b><span>(token, clientId, options = {}, cb = function() {})</span>
+<b>validate</b><span>(token, clientId, options = {}, cb)</span>
       <span class='bound note'>Bound</span>
       <br>
     </p>
@@ -251,7 +251,7 @@ isClientValid can be checked for tighter security.</p>
     <p class='signature' id='createAccessGrant-dynamic'>
       #
 (void)
-<b>createAccessGrant</b><span>(_tenantId, oauthAppId, userId, redirectUrl, scope, realm = null, options = {}, cb = function() {})</span>
+<b>createAccessGrant</b><span>(_tenantId, oauthAppId, userId, redirectUrl, scope, realm = null, options = {}, cb)</span>
       <span class='bound note'>Bound</span>
       <br>
     </p>
@@ -328,7 +328,7 @@ isClientValid can be checked for tighter security.</p>
     <p class='signature' id='createOrReuseTokenForUserId-dynamic'>
       #
 (void)
-<b>createOrReuseTokenForUserId</b><span>(_tenantId, userId, clientId, realm, scope, expiresIn, options = {}, cb = function() {})</span>
+<b>createOrReuseTokenForUserId</b><span>(_tenantId, userId, clientId, realm, scope, expiresIn, options = {}, cb)</span>
       <span class='bound note'>Bound</span>
       <br>
     </p>
@@ -342,7 +342,7 @@ isClientValid can be checked for tighter security.</p>
     <p class='signature' id='createTokenForUserId-dynamic'>
       #
 (void)
-<b>createTokenForUserId</b><span>(_tenantId, userId, clientId, realm = null, scope = null, expiresIn = null, options = {}, cb = function() {})</span>
+<b>createTokenForUserId</b><span>(_tenantId, userId, clientId, realm = null, scope = null, expiresIn = null, options = {}, cb)</span>
       <span class='bound note'>Bound</span>
       <br>
     </p>
@@ -356,7 +356,7 @@ isClientValid can be checked for tighter security.</p>
     <p class='signature' id='exchangeAuthorizationCodeForAccessToken-dynamic'>
       #
 (void)
-<b>exchangeAuthorizationCodeForAccessToken</b><span>(code, options = {}, cb = function() {})</span>
+<b>exchangeAuthorizationCodeForAccessToken</b><span>(code, options = {}, cb)</span>
       <span class='bound note'>Bound</span>
       <br>
     </p>
@@ -383,7 +383,7 @@ isClientValid can be checked for tighter security.</p>
     <p class='signature' id='exchangeRefreshTokenForAccessToken-dynamic'>
       #
 (void)
-<b>exchangeRefreshTokenForAccessToken</b><span>(refreshToken, options = {}, cb = function() {})</span>
+<b>exchangeRefreshTokenForAccessToken</b><span>(refreshToken, options = {}, cb)</span>
       <span class='bound note'>Bound</span>
       <br>
     </p>
@@ -409,11 +409,11 @@ isClientValid can be checked for tighter security.</p>
 </div>
     </div>
     <div id='footer'>
-  August 31, 14 17:12:51 by
+  September 02, 15 07:27:11 by
   <a href='https://github.com/coffeedoc/codo' title='CoffeeScript API documentation generator'>
     Codo
   </a>
-  2.0.9
+  2.0.11
   &#10034;
   Press H to see the keyboard shortcuts
   &#10034;
